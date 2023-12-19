@@ -14,6 +14,7 @@
             <th>Names</th>
             <th>Emails</th>
             <th>MNos</th>
+            <th>actions</th>
         </tr>
         <% if(student.length > 0){ %>
 
@@ -24,6 +25,10 @@
                         <td><%- student[i].name %></td>
                         <td><%- student[i].email %></td>
                         <td><%- student[i].mno %></td>
+                        <td>
+                            <a href="/delete-student?id=<%- student[i].id %>">Delete</a>
+                            <a href="/update-student?id=<%- student[i].id %>">update</a>
+                        </td>
                     </tr>
                 <% } %>
     

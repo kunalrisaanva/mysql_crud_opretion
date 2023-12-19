@@ -3,7 +3,7 @@ const express  =require('express') ;
 const path = require('path') 
 const app = express();
 const bodyParser = require("body-parser");
-
+const port = 5000;
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -52,6 +52,51 @@ app.get('/students',((req,res)=>{
 
 }))
 
+app.get('/delete-student',((req,res)=>{
+
+    con.connect((error)=>{
+      if (error) throw error;
+      let sql = 'DELETE FROM student WHERE id =?';
+       let id = req.query.id
+       con.query(sql,[id],(error ,result)=>{
+         if (error) console.log(error);
+         console.log(result);
+        res.redirect('/students')
+       })
+    })
+ 
+ }))
+
+ app.get('/update-student',((req,res)=>{
+
+    con.connect((error)=>{
+      if (error) throw error;
+      let sql = 'SELECT * FROM student WHERE id =?';
+       let id = req.query.id
+       con.query(sql,[id],(error ,result)=>{
+         if (error) console.log(error);
+         console.log(result);
+        res.render('updateStudent',{student:result})
+       })
+    })
+ 
+ }))
 
 
-app.listen(7000,()=> console.log('listening on port 7000'))
+ app.post('/update-student',((req,res)=>{
+    const {name,email,mno ,id} = req.body
+    con.connect((error)=>{
+      if (error) throw error;
+      let sql = 'UPDATE student SET name=? , email=? , mno=? WHERE id =?';
+       let id = req.query.id
+       con.query(sql,[ name, email, mno, id],(error ,result)=>{
+         if (error) console.log(error);
+         res.redirect('/students')
+        
+       })
+    })
+ 
+ }))
+
+
+app.listen(port,()=> console.log(`listening on port ${port}`))
