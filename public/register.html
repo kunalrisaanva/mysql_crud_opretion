@@ -1,8 +1,35 @@
 <h1>Student Register</h1>
 
-<form action="" method="post">
-    <input type="text" name="name" placeholder="Enter Your Name"><br><br>
-    <input type="email" name="email" placeholder="Enter Your email"><br><br>
-    <input type="number" name="mno" placeholder="Enter Your Mobile Number"><br><br>
+<form onsubmit="return submitForm()">
+    <input type="text" name="name" placeholder="Enter Your Name" required><br><br>
+    <input type="email" name="email" placeholder="Enter Your email" required><br><br>
+    <input type="number" name="mno" placeholder="Enter Your Mobile Number" required><br><br>
     <input type="submit" value="Submit">
 </form>
+
+
+
+
+<script>
+
+    function submitForm(){
+        
+        var name = document.getElementsByTagName('input')[0].value;
+        var email = document.getElementsByTagName('input')[1].value;
+        var mno = document.getElementsByTagName('input')[2].value;
+
+        var req = XMLHttpRequest();
+        req.open('POST','/');
+        req.setHeader('content-type','application/x-www-form-urlencoded');
+        req.send("name"+name+" & email "+email+" & mno "+mno+" ");
+
+        req.onreadystage = function(){
+            if(req.readystate == 4 && req.status == 200){
+                alert(req.responseText)
+            }
+        };
+        return event.preventDefault()
+
+    }
+
+</script>
