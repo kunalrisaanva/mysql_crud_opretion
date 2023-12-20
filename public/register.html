@@ -20,7 +20,14 @@
 
         var req = XMLHttpRequest();
         req.open('POST','/');
-        req.setHeader('content-type','application/x-www-form-urlencoded')
+        req.setHeader('content-type','application/x-www-form-urlencoded');
+        req.send("name"+name+" & email "+email+" & mno "+mno+" ");
+
+        req.onreadystage = function(){
+            if(req.readystate == 4 && req.status == 200){
+                alert(req.responseText)
+            }
+        };
         return event.preventDefault()
 
     }
