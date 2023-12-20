@@ -3,7 +3,9 @@ const express  =require('express') ;
 const path = require('path') 
 const app = express();
 const bodyParser = require("body-parser");
+const { render } = require('ejs');
 const port = 5000;
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -98,5 +100,34 @@ app.get('/delete-student',((req,res)=>{
  
  }))
 
+app.get('/search-students',((req,res)=> {
+  con.connect((error)=>{
+    if (error) throw error;
+    let sql = 'SELECT * FROM student';
+
+     con.query(sql,(error ,result)=>{
+       if (error) console.log(error);
+       console.log(result);
+       res.render("searchStudent",{student:result});
+     })
+  })
+}))
+
+
+app.get("/search",((req,res) => {
+
+  var name =req.query.name
+  var email =req.query.email
+  var mno = req.query.mno
+  con.connect((error) => {
+     if(error) throw error
+    let sql = "SELECT * FROM student WHERE name LIKE '%"+name+"%'  AND email LIKE '%"+email+"%' AND mno LIKE '%"+mno+"%'" 
+    con.query(sql,(error,result) => {
+       if(error) console.log(error);
+       res.render('searchStudent',{student:result});
+    })
+  })
+
+}))
 
 app.listen(port,()=> console.log(`listening on port ${port}`))
